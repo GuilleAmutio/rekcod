@@ -1,8 +1,8 @@
 #!/bin/bash
 
-## Basic configuration
+# Basic configuration
 sudo apt get update
 sudo apt upgrade -y
 
-## Tools for systemd
+# Useful packages
 sudo apt install -yqq fontconfig daemonize apt-transport-https ca-certificates curl gnupg lsb-release
