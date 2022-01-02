@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Basic configuration
-sudo apt get update
+sudo apt-get update
 sudo apt upgrade -y
 
 # Useful packages
