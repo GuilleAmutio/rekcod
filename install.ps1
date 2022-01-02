@@ -22,6 +22,7 @@ dockerd --register-service
 ## TODO Set alias for rekcod=docker and rekcod-compose=docker-compose
 ## TODO Allow user to select WSL installation folder
 ## TODO Check WSL is already enabled
+## TODO Use variables for paths
 
 ## Create WSL distro
 
@@ -37,19 +38,16 @@ wsl --import rekcod-wsl C:/rekcod tools/rekcod-wsl.tar
 wsl --set-version rekcod-wsl 2
 
 ## Download wsl-install.sh script on the wsl distro script and execute it
-wsl --exec curl https://raw.githubusercontent.com/GuilleAmutio/rekcod/feature/install_docker/scripts/wsl-install.sh
-wsl --exec ./wsl-install.sh
+wsl --exec ./scripts/wsl-install.sh
 
 ## Download wsl-systemd.sh script on the wsl distro and execute it
-wsl --exec curl https://raw.githubusercontent.com/GuilleAmutio/rekcod/feature/install_docker/scripts/wsl-systemd.sh
-wsl --exec ./wsl-systemd.sh
+wsl --exec ./scripts/wsl-systemd.sh
 
 ## Restart WSL distro to start using systemd
-wsl -t rekcod-wsl.sh
+wsl -t rekcod-wsl
 
 ## Download wsl-docker.sh script on the wsl distro and execute it
-wsl --exec curl https://raw.githubusercontent.com/GuilleAmutio/rekcod/feature/install_docker/scripts/wsl-docker.sh
-wsl --exec ./wsl-docker.sh
+wsl --exec ./scripts/wsl-docker.sh
 
 #endregion
 
