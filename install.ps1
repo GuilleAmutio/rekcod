@@ -31,14 +31,14 @@ Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/do
 ## TODO Check WSL is already enabled
 ## TODO Use variables for paths
 ## TODO Check the distro is in version 2
+## TODO Specify which WSL distro should execute the commands
 ## Create WSL distro
 
 ### Select folder to install
 mkdir C:/rekcod
-mkdir C:/rekcod/scripts
 
 ### Copy scripts and files
-Copy-Item scripts/ C:/rekcod/scripts # Have to be tested
+Copy-Item ./scripts/ C:/rekcod/ # Have to be tested
 Copy-Item uninstall.ps1 C:/rekcod # Have to be tested
 
 wsl --import rekcod-wsl C:/rekcod tools/rekcod-wsl.tar 
@@ -60,10 +60,18 @@ wsl --exec ./scripts/wsl-docker.sh
 
 #region Configuration
 
-## Set 'rekcod' as an alias for the start.ps1 script
+## Set 'rekcod-start' as an alias for the start.ps1 script
+## TODO Path of script for alias should be parametrized
+Set-Alias rekcod-start C:\docker\scripts\start.ps1
 
+## Set 'rekcod-off' as an alias for the stop.ps1 script
+## TODO Path of script for alias should be parametrized
+Set-Alias rekcod-shutdown C:\docker\scripts\start.ps1
 
-## Set 'rekcod off' as an alias for the stop.ps1 script
+## Set 'rekcod' as an alias for 'docker'
+Set-Alias rekcod docker
 
+## Set 'rekcod-compose' as and alias for 'docker-compose'
+Set-Alias rekcod-compose docker-compose
 
 #endregion
