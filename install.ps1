@@ -10,12 +10,19 @@
 ## TODO Set alias for rekcod=docker and rekcod-compose=docker-compose
 ## TODO Check if dockerd is already installed 
 
+## Docker CLI
 curl.exe -o docker.zip -LO https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip 
 Expand-Archive docker.zip -DestinationPath C:\
 Remove-Item docker.zip
 [Environment]::SetEnvironmentVariable("Path", "$($env:path);C:\docker", [System.EnvironmentVariableTarget]::Machine)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 dockerd --register-service
+
+## docker-compose
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile C:\docker\docker-compose.exe
+
+
 #endregion
 
 #region WSL
@@ -23,7 +30,7 @@ dockerd --register-service
 ## TODO Allow user to select WSL installation folder
 ## TODO Check WSL is already enabled
 ## TODO Use variables for paths
-
+## TODO Check the distro is in version 2
 ## Create WSL distro
 
 ### Select folder to install
@@ -31,10 +38,10 @@ mkdir C:/rekcod
 mkdir C:/rekcod/scripts
 
 ### Copy scripts and files
-Copy-Item scripts/ C:/rekcod/scripts
-Copy-Item uninstall.ps1 C:/rekcod
+Copy-Item scripts/ C:/rekcod/scripts # Have to be tested
+Copy-Item uninstall.ps1 C:/rekcod # Have to be tested
 
-wsl --import rekcod-wsl C:/rekcod tools/rekcod-wsl.tar
+wsl --import rekcod-wsl C:/rekcod tools/rekcod-wsl.tar 
 wsl --set-version rekcod-wsl 2
 
 ## Download wsl-install.sh script on the wsl distro script and execute it

@@ -11,7 +11,7 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
 sudo apt-get update
 
 # These packages MUST be marked as hold to prevent updates without previous testing
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose
 
 ## Configure WSL to launch dockerd on startup
 sudo systemctl enable docker.service
