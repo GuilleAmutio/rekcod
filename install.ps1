@@ -1,11 +1,8 @@
 #Requires -RunAsAdministrator
 
 # All TODOs
-## TODO Keep everything clean after installation
 ## TODO Check every download and execution works as expected
 ## TODO Check if dockerd is already installed before install
-## TODO Check WSL is already enabled
-## TODO Check the distro is in version 2
 ## TODO Specify which WSL distro should execute the commands. Something like 'wsl -d rekcod-wsl --exec echo "Hello world"
 ## TODO Write-Host for each step with a yellow color
 ## TODO Clear console for each menu iteration
