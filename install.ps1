@@ -72,13 +72,13 @@ if (-not (Test-Path $RekcodInstallationPath)){
 curl.exe -o docker.zip -LO https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip 
 Expand-Archive docker.zip -DestinationPath $RekcodInstallationPath
 Remove-Item docker.zip
-[Environment]::SetEnvironmentVariable("Path", "$($env:path);$RekcodInstallationPath\docker", [System.EnvironmentVariableTarget]::Machine)
+[Environment]::SetEnvironmentVariable("Path", "$($env:path);$RekcodInstallationPath/docker", [System.EnvironmentVariableTarget]::Machine)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 dockerd --register-service
 
 ## docker-compose
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $RekcodInstallationPath\docker\docker-compose.exe
+Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $RekcodInstallationPath/docker/docker-compose.exe
 #endregion
 
 ##############################
