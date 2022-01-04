@@ -16,6 +16,12 @@ $RekcodInstallationPath = "C:/rekcod"
 $Answer = "N"
 $TmpPath
 
+
+##############################
+#            MENU            #
+##############################
+
+#region usermenu
 # Introduction about rekcod and ask user for installation path telling the default path
 Write-Host @"
 Welcome to rekcod installation wizard!
@@ -54,10 +60,14 @@ do {
     }
 } while ($Answer -ne "Y" -and $Answer -ne "N")
 
-### Select folder to install
 if (-not (Test-Path $RekcodInstallationPath)){
     mkdir $RekcodInstallationPath
 }
+#endregion
+
+##############################
+#           WINDOWS          #
+##############################
 
 #region Windows
 
@@ -72,8 +82,11 @@ dockerd --register-service
 ## docker-compose
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $RekcodInstallationPath\docker\docker-compose.exe
-
 #endregion
+
+##############################
+#             WSL            #
+##############################
 
 #region WSL
 
@@ -99,8 +112,11 @@ wsl -t rekcod-wsl
 
 ## Call wsl-docker.sh script from inside the WSl distro
 wsl --exec ./scripts/wsl-docker.sh
-
 #endregion
+
+##############################
+#        Configuration       #
+##############################
 
 #region Configuration
 
@@ -115,7 +131,6 @@ Set-Alias rekcod docker
 
 ## Set 'rekcod-compose' as and alias for 'docker-compose'
 Set-Alias rekcod-compose docker-compose
-
 #endregion
 
 # Refresh environment variables
