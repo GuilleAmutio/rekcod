@@ -1,9 +1,31 @@
 #!Requires -RunAsAdministrator
 
-## TODO Unregister dockerd service
-## TODO Unregister WSL distribution
-wsl --unregister rekcod-wsl 
+$RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
+
+# Unregister dockerd service
+dockerd --unregister-service
+
+# Unregister WSL distribution
+wsl --unregister rekcod-wsl
 
 ## TODO Remove powershell profile
 
-## TODO Remove installation folder
+# Remove installation folder
+Remove-Item $RekcodInstallationPath -Recurse
+
+# Get PATH variable
+$path = [System.Environment]::GetEnvironmentVariable(
+    'PATH',
+    'Machine'
+)
+# Remove unwanted elements
+$path = ($path.Split(';') | Where-Object { $_ -ne "${RekcodInstallationPath}/docker" }) -join ';'
+# Set it
+[System.Environment]::SetEnvironmentVariable(
+    'PATH',
+    $path,
+    'Machine'
+)
+
+# Remove REKCOD env variable
+[Environment]::SetEnvironmentVariable("REKCOD", $null ,"Machine")
