@@ -58,6 +58,10 @@ do {
 if (-not (Test-Path $RekcodInstallationPath)){
     mkdir $RekcodInstallationPath
 }
+
+# Set installation folder as an env variable
+[Environment]::SetEnvironmentVariable("REKCOD", "${RekcodInstallationPath}", [System.EnvironmentVariableTarget]::Machine)
+
 #endregion
 
 ##############################
@@ -92,7 +96,7 @@ Write-Host 'Docker for Windows was installed succesfully.' -ForegroundColor Gree
 Write-Host 'Installing WSL distro for Linux containers...' -ForegroundColor Blue
 
 ## Download rekcod distro
-mkdir .\tools
+mkdir ${RekcodInstallationPath}\tools
 Invoke-WebRequest "https://github.com/GuilleAmutio/rekcod/releases/download/v0.1.1-alpha/rekcod-wsl.tar" -Outfile "./tools/rekcod-wsl.tar"
 
 ### Copy scripts and files
@@ -101,7 +105,7 @@ Copy-Item uninstall.ps1 $RekcodInstallationPath
 Copy-Item start.ps1 $RekcodInstallationPath
 Copy-Item stop.ps1 $RekcodInstallationPath
 
-wsl --import rekcod-wsl $RekcodInstallationPath tools/rekcod-wsl.tar 
+wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}/tools/rekcod-wsl.tar 
 wsl --set-version rekcod-wsl 2
 
 ## Call wsl-install.sh script from inside the WSl distro
