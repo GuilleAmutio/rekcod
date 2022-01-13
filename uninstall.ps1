@@ -2,6 +2,9 @@
 
 $RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
 
+# Stop docker before uninstall
+./stop.ps1
+
 # Unregister dockerd service
 dockerd --unregister-service
 
