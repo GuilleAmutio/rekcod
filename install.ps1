@@ -96,8 +96,8 @@ Write-Host 'Docker for Windows was installed succesfully.' -ForegroundColor Gree
 Write-Host 'Installing WSL distro for Linux containers...' -ForegroundColor Blue
 
 ## Download rekcod distro
-mkdir ${RekcodInstallationPath}\tools
-Invoke-WebRequest "https://github.com/GuilleAmutio/rekcod/releases/download/v0.1.1-alpha/rekcod-wsl.tar" -Outfile "./tools/rekcod-wsl.tar"
+mkdir ${RekcodInstallationPath}/tools
+Invoke-WebRequest "https://github.com/GuilleAmutio/rekcod/releases/download/v0.1.1-alpha/rekcod-wsl.tar" -Outfile "${RekcodInstallationPath}/tools/rekcod-wsl.tar"
 
 ### Copy scripts and files
 Copy-Item ./scripts/ $RekcodInstallationPath -Recurse
