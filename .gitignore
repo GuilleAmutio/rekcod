@@ -2,3 +2,6 @@
 *.tar
 *.tar.gz
 *.zip
+
+# Ignore wsl distribution for dev
+*.vhdx
