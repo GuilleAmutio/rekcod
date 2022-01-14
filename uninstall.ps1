@@ -21,8 +21,10 @@ $path = [System.Environment]::GetEnvironmentVariable(
     'PATH',
     'Machine'
 )
+
 # Remove unwanted elements
-$path = ($path.Split(';') | Where-Object { $_ -ne "${RekcodInstallationPath}/docker" }) -join ';'
+$path = ($path.Split(';') | Where-Object { $_ -ne "${RekcodInstallationPath}\docker" }) -join ';'
+
 # Set it
 [System.Environment]::SetEnvironmentVariable(
     'PATH',

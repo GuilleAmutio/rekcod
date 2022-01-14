@@ -75,13 +75,13 @@ Write-Host 'Installing Docker for Windows...' -ForegroundColor Blue
 curl.exe -o docker.zip -LO https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip 
 Expand-Archive docker.zip -DestinationPath $RekcodInstallationPath
 Remove-Item docker.zip
-[Environment]::SetEnvironmentVariable("Path", "$($env:path);$RekcodInstallationPath/docker", [System.EnvironmentVariableTarget]::Machine)
+[Environment]::SetEnvironmentVariable("Path", "$($env:path);$RekcodInstallationPath\docker", [System.EnvironmentVariableTarget]::Machine)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 dockerd --register-service
 
 ## docker-compose
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $RekcodInstallationPath/docker/docker-compose.exe
+Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $RekcodInstallationPath\docker\docker-compose.exe
 
 Write-Host 'Docker for Windows was installed succesfully.' -ForegroundColor Green
 #endregion
@@ -97,7 +97,7 @@ Write-Host 'Installing WSL distro for Linux containers...' -ForegroundColor Blue
 
 ## Download rekcod distro
 mkdir ${RekcodInstallationPath}/tools
-Invoke-WebRequest "https://github.com/GuilleAmutio/rekcod/releases/download/v0.1.1-alpha/rekcod-wsl.tar" -Outfile "${RekcodInstallationPath}/tools/rekcod-wsl.tar"
+Invoke-WebRequest "https://github.com/GuilleAmutio/rekcod/releases/download/v0.1.1-alpha/rekcod-wsl.tar" -Outfile "${RekcodInstallationPath}\tools\rekcod-wsl.tar"
 
 ### Copy scripts and files
 Copy-Item ./scripts/ $RekcodInstallationPath -Recurse
@@ -105,7 +105,7 @@ Copy-Item uninstall.ps1 $RekcodInstallationPath
 Copy-Item start.ps1 $RekcodInstallationPath
 Copy-Item stop.ps1 $RekcodInstallationPath
 
-wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}/tools/rekcod-wsl.tar 
+wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}\tools\rekcod-wsl.tar 
 wsl --set-version rekcod-wsl 2
 
 ## Call wsl-install.sh script from inside the WSl distro
@@ -144,3 +144,5 @@ Set-Alias rekcod-compose docker-compose
 
 # Refresh environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
+## In order to use docker as normal user you must refresh session. Pormpt user to do it now or later by himself
