@@ -7,7 +7,7 @@
 ## !BUG Docker is only started and managed from an admin prompt. Check behaviour and user-groups. Create one if necessary
 
 # Variables
-$RekcodInstallationPath = "C:/rekcod"
+$RekcodInstallationPath = "C:\rekcod"
 $Answer = "N"
 $TmpPath
 
