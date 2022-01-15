@@ -1,8 +1,6 @@
 #Requires -RunAsAdministrator
 
 # All TODOs
-## TODO Check every download and execution works as expected
-## TODO Check if dockerd is already installed before install
 ## TODO Clear console for each action. Keep it clean!
 ## !BUG Docker is only started and managed from an admin prompt. Check behaviour and user-groups. Create one if necessary
 
@@ -109,18 +107,30 @@ wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}\tools\
 wsl --set-version rekcod-wsl 2
 
 ## Call wsl-install.sh script from inside the WSl distro
+Write-Host 'Installing WSL distro...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-install.sh
 
 ## Call wsl-systemd.sh script from inside the WSl distro
+Write-Host 'Enabling systemd...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-systemd.sh
 
 ## Restart WSL distro to start using systemd
 wsl -t rekcod-wsl
 
+## Call wsl-expose.sh script from inside the WSL distro
+Write-Host 'Creating service to expose Docker...' -ForegroundColor Yellow
+wsl -d rekcod-wsl --exec ./scripts/wsl-expose.sh
+
+## Call wsl-service.sh script from inside the WSL distro
+Write-Host 'Enabling service to expose Docker...' -ForegroundColor Yellow
+wsl -d rekcod-wsl --exec ./scripts/wsl-service.sh
+
 ## Call wsl-docker.sh script from inside the WSl distro
+Write-Host 'Installing Docker in WSL...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-docker.sh
 
 Write-Host 'WSL distro with Docker was installed succesfully.' -ForegroundColor Green
+wsl -t rekcod-wsl
 #endregion
 
 ##############################
@@ -145,4 +155,4 @@ Set-Alias rekcod-compose docker-compose
 # Refresh environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
-## In order to use docker as normal user you must refresh session. Pormpt user to do it now or later by himself
+## In order to use docker as normal user you must refresh session. Prompt user to do it now or later by himself
