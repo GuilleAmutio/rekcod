@@ -1,8 +1,43 @@
 #!Requires -RunAsAdministrator
 
-## TODO Unregister dockerd service
-## TODO Unregister WSL distribution
-## TODO Remove alias
-## TODO Remove environment variables
-## TODO Remove installationFolder
+$RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
 
+Write-Host 'We are sorry to see you go but allow us to leave your machine as clean as before rekcod.' -ForegroundColor Yellow
+
+# Stop docker before uninstall
+Stop-Service docker
+
+# Unregister dockerd service
+dockerd --unregister-service
+
+# Unregister WSL distribution
+Write-Host 'Removing WSL...' -ForegroundColor Yellow
+wsl --unregister rekcod-wsl
+
+## TODO Remove powershell profile
+
+# Remove installation folder
+Write-Host 'Removing rekcod folder...' -ForegroundColor Yellow
+Remove-Item $RekcodInstallationPath -Recurse
+
+# Get PATH variable
+Write-Host 'Cleaning environment variables...' -ForegroundColor Yellow
+$path = [System.Environment]::GetEnvironmentVariable(
+    'PATH',
+    'Machine'
+)
+
+# Remove unwanted elements
+$path = ($path.Split(';') | Where-Object { $_ -ne "${RekcodInstallationPath}\docker" }) -join ';'
+
+# Set it
+[System.Environment]::SetEnvironmentVariable(
+    'PATH',
+    $path,
+    'Machine'
+)
+
+# Remove REKCOD env variable
+[Environment]::SetEnvironmentVariable("REKCOD", $null ,"Machine")
+
+Write-Host 'Rekcod has been uninstalled. See you soon :)' -ForegroundColor Yellow
