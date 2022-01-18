@@ -2,7 +2,6 @@
 
 # All TODOs
 ## TODO Clear console for each action. Keep it clean!
-## !BUG Docker is only started and managed from an admin prompt. Check behaviour and user-groups. Create one if necessary
 
 # Variables
 $RekcodInstallationPath = "C:\rekcod"
@@ -75,7 +74,7 @@ $RekcodProfile = "${RekcodInstallationPath}\profile"
 
 ## Docker CLI
 Write-Output 'Installing Docker for Windows...' -ForegroundColor Blue
-curl.exe -o docker.zip -LO https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip
+Invoke-WebRequest "https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip" -OutFile "docker.zip"
 Expand-Archive docker.zip -DestinationPath $RekcodInstallationPath
 Remove-Item docker.zip
 [Environment]::SetEnvironmentVariable("Path", "$($env:path);$RekcodInstallationPath\docker", [System.EnvironmentVariableTarget]::Machine)
@@ -170,8 +169,6 @@ $Rule = New-Object "System.Security.AccessControl.FileSystemAccessRule" -Argumen
 $AccessControl.AddAccessRule($Rule)
 $Info.SetAccessControl($AccessControl)
 
-#endregion
-
 # Refresh environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
@@ -180,3 +177,5 @@ docker context create lin --docker host=tcp://127.0.0.1:2375
 
 ## Create link to use Windows. Instead of using the default one
 docker context create win --docker host=npipe:////./pipe/docker_engine
+
+#endregion
