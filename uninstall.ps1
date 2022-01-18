@@ -4,6 +4,10 @@ $RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
 
 Write-Host 'We are sorry to see you go but allow us to leave your machine as clean as before rekcod.' -ForegroundColor Yellow
 
+# Remove docker contexts
+docker context rm win
+docker context rm lin
+
 # Stop docker before uninstall
 Stop-Service docker
 
