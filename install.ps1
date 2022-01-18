@@ -11,9 +11,6 @@ param()
 $RekcodInstallationPath = "C:\rekcod"
 $Answer = "N"
 $TmpPath
-$FullControll = [System.Security.AccessControl.FileSystemRights]::FullControll
-$Allow = [System.Security.AccessControl.AccessControlType]::Allow
-$Account = "$env:UserDomain\$env:Username"
 
 ##############################
 #            MENU            #
@@ -166,13 +163,6 @@ Get-Content "${RekcodProfile}\rekcod-profile.ps1" >> $PROFILE
 
 ## Load the new profile
 . $PROFILE
-
-## Grant normal users access to docker
-$Info = New-Object "System.IO.DirectoryInfo" -ArgumentList "\\.\pipe\docker_engine"
-$AccessControl = $Info.GetAccesControl()
-$Rule = New-Object "System.Security.AccessControl.FileSystemAccessRule" -ArgumentList $Account,$FullControll,$Allow
-$AccessControl.AddAccessRule($Rule)
-$Info.SetAccessControl($AccessControl)
 
 # Refresh environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
