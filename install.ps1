@@ -17,37 +17,37 @@ $Account = "$env:UserDomain\$env:Username"
 
 #region usermenu
 # Introduction about rekcod and ask user for installation path telling the default path
-Write-Output @"
+Write-Host @"
 Welcome to rekcod installation wizard!
 rekcod is a tool developed to guide the installation of docker for Windows and Linux container.
 This tool uses a WSL distribution based on Ubuntu-20.04 and the binary of Docker for Windows.
 "@ -ForegroundColor Blue
 do {
-    Write-Output 'The default installation path is '$RekcodInstallationPath'' -ForegroundColor Magenta
+    Write-Host 'The default installation path is '$RekcodInstallationPath'' -ForegroundColor Magenta
     $Answer = Read-Host -Prompt 'Would you like to change it? Default is no (Y/N)'
 
     if($Answer -ne "Y" -and $Answer -ne "N" ) {
-        Write-Output 'Please, choose yes (Y) or no (N)' -ForegroundColor Yellow
+        Write-Host 'Please, choose yes (Y) or no (N)' -ForegroundColor Yellow
     }
     elseif($Answer -eq "Y") {
         do {
-            Write-Output 'Write the absolute path for rekcod installation. The path MUST exists.' -ForegroundColor Magenta
+            Write-Host 'Write the absolute path for rekcod installation. The path MUST exists.' -ForegroundColor Magenta
             $TmpPath = Read-Host -Prompt 'Please, select where rekcod will be installed'
 
-            Write-Output 'Rekcod will be installed in '$TmpPath'' -ForegroundColor Magenta
+            Write-Host 'Rekcod will be installed in '$TmpPath'' -ForegroundColor Magenta
             $Answer = Read-Host -Prompt 'Is this correct? (Y/N)'
 
             if($Answer -ne "Y" -and $Answer -ne "N" ) {
-                Write-Output 'Please, choose yes (Y) or no (N)'
+                Write-Host 'Please, choose yes (Y) or no (N)'
             }
             elseif($Answer -eq "Y") {
                 if (-not (Test-Path $TmpPath)) {
-                    Write-Output 'The path indicated does not exist. Please, select a valid one.' -ForegroundColor Red
+                    Write-Host 'The path indicated does not exist. Please, select a valid one.' -ForegroundColor Red
                     $Answer = "N"
                 }
                 else {
                     $RekcodInstallationPath = $TmpPath + "/rekcod"
-                    Write-Output 'Path is valid. Rekcod will be installed at '$RekcodInstallationPath'' -ForegroundColor Green
+                    Write-Host 'Path is valid. Rekcod will be installed at '$RekcodInstallationPath'' -ForegroundColor Green
                 }
             }
         } while ($Answer -ne "Y")
@@ -73,7 +73,7 @@ $RekcodProfile = "${RekcodInstallationPath}\profile"
 #region Windows
 
 ## Docker CLI
-Write-Output 'Installing Docker for Windows...' -ForegroundColor Blue
+Write-Host 'Installing Docker for Windows...' -ForegroundColor Blue
 Invoke-WebRequest "https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip" -OutFile "docker.zip"
 Expand-Archive docker.zip -DestinationPath $RekcodInstallationPath
 Remove-Item docker.zip
@@ -85,7 +85,7 @@ dockerd --register-service
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $RekcodInstallationPath\docker\docker-compose.exe
 
-Write-Output 'Docker for Windows was installed successfully.' -ForegroundColor Green
+Write-Host 'Docker for Windows was installed successfully.' -ForegroundColor Green
 
 #endregion
 
@@ -96,7 +96,7 @@ Write-Output 'Docker for Windows was installed successfully.' -ForegroundColor G
 #region WSL
 
 ## Create WSL distro
-Write-Output 'Installing WSL distro for Linux containers...' -ForegroundColor Blue
+Write-Host 'Installing WSL distro for Linux containers...' -ForegroundColor Blue
 
 ## Download rekcod distro
 mkdir ${RekcodInstallationPath}/tools
@@ -114,29 +114,29 @@ wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}\tools\
 wsl --set-version rekcod-wsl 2
 
 ## Call wsl-install.sh script from inside the WSl distro
-Write-Output 'Installing WSL distro...' -ForegroundColor Yellow
+Write-Host 'Installing WSL distro...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-install.sh
 
 ## Call wsl-systemd.sh script from inside the WSl distro
-Write-Output 'Enabling systemd...' -ForegroundColor Yellow
+Write-Host 'Enabling systemd...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-systemd.sh
 
 ## Restart WSL distro to start using systemd
 wsl -t rekcod-wsl
 
 ## Call wsl-expose.sh script from inside the WSL distro
-Write-Output 'Creating service to expose Docker...' -ForegroundColor Yellow
+Write-Host 'Creating service to expose Docker...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-expose.sh
 
 ## Call wsl-service.sh script from inside the WSL distro
-Write-Output 'Enabling service to expose Docker...' -ForegroundColor Yellow
+Write-Host 'Enabling service to expose Docker...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-service.sh
 
 ## Call wsl-docker.sh script from inside the WSl distro
-Write-Output 'Installing Docker in WSL...' -ForegroundColor Yellow
+Write-Host 'Installing Docker in WSL...' -ForegroundColor Yellow
 wsl -d rekcod-wsl --exec ./scripts/wsl-docker.sh
 
-Write-Output 'WSL distro with Docker was installed successfully.' -ForegroundColor Green
+Write-Host 'WSL distro with Docker was installed successfully.' -ForegroundColor Green
 wsl -t rekcod-wsl
 
 #endregion
@@ -157,7 +157,7 @@ if (!(Test-Path -Path $PROFILE))
 Copy-Item $PROFILE "$RekcodProfile\old-profile.ps1"
 
 ## Add the rekcod profile
-Write-Output "" >> $PROFILE
+Write-Host "" >> $PROFILE
 Get-Content "${RekcodProfile}\rekcod-profile.ps1" >> $PROFILE
 
 ## Load the new profile

@@ -1,11 +1,11 @@
 #Requires -RunAsAdministrator
 
 # Start dockerd service on Windows
-Write-Output "Starting Docker for Windows..."
+Write-Host "Starting Docker for Windows..." -ForegroundColor Yellow
 Start-Service docker
 
 # Start WSL distro
-Write-Output "Starting Docker for Linux..."
+Write-Host "Starting Docker for Linux..." -ForegroundColor Yellow
 Start-Job -Name rekcod-wsl -ScriptBlock{ wsl -d rekcod-wsl }
 
-Write-Output "Docker is up and ready! Happy coding!"
+Write-Host "Docker is up and ready! Happy coding!" -ForegroundColor Green
