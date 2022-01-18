@@ -105,10 +105,11 @@ Invoke-WebRequest "https://github.com/GuilleAmutio/rekcod/releases/download/v0.1
 
 ### Copy scripts and files
 Copy-Item ./profile/ $RekcodInstallationPath -Recurse
-Copy-Item ./scripts/ $RekcodInstallationPath -Recurse
+Copy-Item ./wsl-scripts/ $RekcodInstallationPath -Recurse
+Copy-Item ./pwsh-scripts/ $RekcodInstallationPath -Recurse
 Copy-Item uninstall.ps1 $RekcodInstallationPath
-Copy-Item start.ps1 $RekcodInstallationPath
-Copy-Item stop.ps1 $RekcodInstallationPath
+Copy-Item rekcod-start.ps1 $RekcodInstallationPath
+Copy-Item rekcod-stop.ps1 $RekcodInstallationPath
 Copy-Item rekcod-switch.ps1 $RekcodInstallationPath
 
 wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}\tools\rekcod-wsl.tar
@@ -116,26 +117,26 @@ wsl --set-version rekcod-wsl 2
 
 ## Call wsl-install.sh script from inside the WSl distro
 Write-Host 'Installing WSL distro...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-install.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-install.sh
 
 ## Call wsl-systemd.sh script from inside the WSl distro
 Write-Host 'Enabling systemd...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-systemd.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-systemd.sh
 
 ## Restart WSL distro to start using systemd
 wsl -t rekcod-wsl
 
 ## Call wsl-expose.sh script from inside the WSL distro
 Write-Host 'Creating service to expose Docker...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-expose.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-expose.sh
 
 ## Call wsl-service.sh script from inside the WSL distro
 Write-Host 'Enabling service to expose Docker...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-service.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-service.sh
 
 ## Call wsl-docker.sh script from inside the WSl distro
 Write-Host 'Installing Docker in WSL...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-docker.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-docker.sh
 
 Write-Host 'WSL distro with Docker was installed successfully.' -ForegroundColor Green
 wsl -t rekcod-wsl
