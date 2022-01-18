@@ -1,3 +1,6 @@
+# Save variable
+$RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
+
 # Set 'rekcod-start' as an alias for the start.ps1 script
 Set-Alias rekcod-start $RekcodInstallationPath\rekcod-start.ps1
 
