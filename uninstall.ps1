@@ -1,4 +1,4 @@
-#!Requires -RunAsAdministrator
+#Requires -RunAsAdministrator
 
 # Supress warnings
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
