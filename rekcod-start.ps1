@@ -1,3 +1,7 @@
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
+
 # Variable
 $RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
 
