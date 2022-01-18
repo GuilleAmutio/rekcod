@@ -1,8 +1,17 @@
-#!Requires -RunAsAdministrator
+#Requires -RunAsAdministrator
+
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
 
 $RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
+$RekcodProfile = "${RekcodInstallationPath}\profile"
 
 Write-Host 'We are sorry to see you go but allow us to leave your machine as clean as before rekcod.' -ForegroundColor Yellow
+
+# Remove docker contexts
+docker context rm win -f
+docker context rm lin -f
 
 # Stop docker before uninstall
 Stop-Service docker
@@ -14,7 +23,10 @@ dockerd --unregister-service
 Write-Host 'Removing WSL...' -ForegroundColor Yellow
 wsl --unregister rekcod-wsl
 
-## TODO Remove powershell profile
+# Remove powershell profile
+Write-Host "Removing rekcod from your profile..." -ForegroundColor Yellow
+New-Item -Type File -Path $PROFILE -Force
+Get-Content "${RekcodProfile}\old-profile.ps1" >> $PROFILE
 
 # Remove installation folder
 Write-Host 'Removing rekcod folder...' -ForegroundColor Yellow

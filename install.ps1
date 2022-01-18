@@ -2,13 +2,15 @@
 
 # All TODOs
 ## TODO Clear console for each action. Keep it clean!
-## !BUG Docker is only started and managed from an admin prompt. Check behaviour and user-groups. Create one if necessary
+
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
 
 # Variables
 $RekcodInstallationPath = "C:\rekcod"
 $Answer = "N"
 $TmpPath
-
 
 ##############################
 #            MENU            #
@@ -24,7 +26,7 @@ This tool uses a WSL distribution based on Ubuntu-20.04 and the binary of Docker
 do {
     Write-Host 'The default installation path is '$RekcodInstallationPath'' -ForegroundColor Magenta
     $Answer = Read-Host -Prompt 'Would you like to change it? Default is no (Y/N)'
-    
+
     if($Answer -ne "Y" -and $Answer -ne "N" ) {
         Write-Host 'Please, choose yes (Y) or no (N)' -ForegroundColor Yellow
     }
@@ -45,8 +47,8 @@ do {
                     $Answer = "N"
                 }
                 else {
-                    $RekcodInstallationPath = $TmpPath + "/rekcod" 
-                    Write-Host 'Path is valid. Rekcod will be installed at '$RekcodInstallationPath'' -ForegroundColor Green                  
+                    $RekcodInstallationPath = $TmpPath + "/rekcod"
+                    Write-Host 'Path is valid. Rekcod will be installed at '$RekcodInstallationPath'' -ForegroundColor Green
                 }
             }
         } while ($Answer -ne "Y")
@@ -60,6 +62,9 @@ if (-not (Test-Path $RekcodInstallationPath)){
 # Set installation folder as an env variable
 [Environment]::SetEnvironmentVariable("REKCOD", "${RekcodInstallationPath}", [System.EnvironmentVariableTarget]::Machine)
 
+# Set the path to the profile
+$RekcodProfile = "${RekcodInstallationPath}\profile"
+
 #endregion
 
 ##############################
@@ -70,7 +75,7 @@ if (-not (Test-Path $RekcodInstallationPath)){
 
 ## Docker CLI
 Write-Host 'Installing Docker for Windows...' -ForegroundColor Blue
-curl.exe -o docker.zip -LO https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip 
+Invoke-WebRequest "https://download.docker.com/win/static/stable/x86_64/docker-20.10.8.zip" -OutFile "docker.zip"
 Expand-Archive docker.zip -DestinationPath $RekcodInstallationPath
 Remove-Item docker.zip
 [Environment]::SetEnvironmentVariable("Path", "$($env:path);$RekcodInstallationPath\docker", [System.EnvironmentVariableTarget]::Machine)
@@ -81,7 +86,8 @@ dockerd --register-service
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $RekcodInstallationPath\docker\docker-compose.exe
 
-Write-Host 'Docker for Windows was installed succesfully.' -ForegroundColor Green
+Write-Host 'Docker for Windows was installed successfully.' -ForegroundColor Green
+
 #endregion
 
 ##############################
@@ -98,39 +104,43 @@ mkdir ${RekcodInstallationPath}/tools
 Invoke-WebRequest "https://github.com/GuilleAmutio/rekcod/releases/download/v0.1.1-alpha/rekcod-wsl.tar" -Outfile "${RekcodInstallationPath}\tools\rekcod-wsl.tar"
 
 ### Copy scripts and files
-Copy-Item ./scripts/ $RekcodInstallationPath -Recurse
+Copy-Item ./profile/ $RekcodInstallationPath -Recurse
+Copy-Item ./wsl-scripts/ $RekcodInstallationPath -Recurse
+Copy-Item ./pwsh-scripts/ $RekcodInstallationPath -Recurse
 Copy-Item uninstall.ps1 $RekcodInstallationPath
-Copy-Item start.ps1 $RekcodInstallationPath
-Copy-Item stop.ps1 $RekcodInstallationPath
+Copy-Item rekcod-start.ps1 $RekcodInstallationPath
+Copy-Item rekcod-stop.ps1 $RekcodInstallationPath
+Copy-Item rekcod-switch.ps1 $RekcodInstallationPath
 
-wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}\tools\rekcod-wsl.tar 
+wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}\tools\rekcod-wsl.tar
 wsl --set-version rekcod-wsl 2
 
 ## Call wsl-install.sh script from inside the WSl distro
 Write-Host 'Installing WSL distro...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-install.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-install.sh
 
 ## Call wsl-systemd.sh script from inside the WSl distro
 Write-Host 'Enabling systemd...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-systemd.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-systemd.sh
 
 ## Restart WSL distro to start using systemd
 wsl -t rekcod-wsl
 
 ## Call wsl-expose.sh script from inside the WSL distro
 Write-Host 'Creating service to expose Docker...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-expose.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-expose.sh
 
 ## Call wsl-service.sh script from inside the WSL distro
 Write-Host 'Enabling service to expose Docker...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-service.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-service.sh
 
 ## Call wsl-docker.sh script from inside the WSl distro
 Write-Host 'Installing Docker in WSL...' -ForegroundColor Yellow
-wsl -d rekcod-wsl --exec ./scripts/wsl-docker.sh
+wsl -d rekcod-wsl --exec ./wsl-scripts/wsl-docker.sh
 
-Write-Host 'WSL distro with Docker was installed succesfully.' -ForegroundColor Green
+Write-Host 'WSL distro with Docker was installed successfully.' -ForegroundColor Green
 wsl -t rekcod-wsl
+
 #endregion
 
 ##############################
@@ -139,20 +149,32 @@ wsl -t rekcod-wsl
 
 #region Configuration
 
-## Set 'rekcod-start' as an alias for the start.ps1 script
-Set-Alias rekcod-start $RekcodInstallationPath\start.ps1
+## Check if a Microsoft profile exist
+if (!(Test-Path -Path $PROFILE))
+{
+    New-Item -Type File -Path $PROFILE -Force
+}
 
-## Set 'rekcod-off' as an alias for the stop.ps1 script
-Set-Alias rekcod-shutdown $RekcodInstallationPath\stop.ps1
+## Copy the content of the profile into a temporary profile
+Copy-Item $PROFILE "$RekcodProfile\old-profile.ps1"
 
-## Set 'rekcod' as an alias for 'docker'
-Set-Alias rekcod docker
+## Add the rekcod profile
+Write-Host "" >> $PROFILE
+Get-Content "${RekcodProfile}\rekcod-profile.ps1" >> $PROFILE
 
-## Set 'rekcod-compose' as and alias for 'docker-compose'
-Set-Alias rekcod-compose docker-compose
-#endregion
+## Load the new profile
+. $PROFILE
 
 # Refresh environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
-## In order to use docker as normal user you must refresh session. Prompt user to do it now or later by himself
+# Create link to use Linux from Windows
+docker context create lin --docker host=tcp://127.0.0.1:2375
+
+## Create link to use Windows. Instead of using the default one
+docker context create win --docker host=npipe:////./pipe/docker_engine
+docker context use win
+
+#endregion
+
+Write-Host 'Rekcod installation has finished.' -ForegroundColor Green
