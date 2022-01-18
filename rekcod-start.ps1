@@ -11,10 +11,3 @@ Write-Host "Starting Docker for Linux..." -ForegroundColor Yellow
 powershell -File ${RekcodInstallationPath}\pwsh-scripts\pwsh-start.ps1
 
 Write-Host "Docker is up and ready! Happy coding!" -ForegroundColor Green
-
-# Allow non-admin users to use Docker
-$Info = New-Object "System.IO.DirectoryInfo" -ArgumentList "\\.\pipe\docker_engine"
-$AccessControl = $Info.GetAccessControl()
-$Rule = New-Object "System.Security.AccessControl.FileSystemAccessRule" -ArgumentList $Account,$FullControl,$Allow
-$AccessControl.AddAccessRule($Rule)
-$Info.SetAccessControl($AccessControl)
