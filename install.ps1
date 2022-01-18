@@ -108,6 +108,7 @@ Copy-Item ./scripts/ $RekcodInstallationPath -Recurse
 Copy-Item uninstall.ps1 $RekcodInstallationPath
 Copy-Item start.ps1 $RekcodInstallationPath
 Copy-Item stop.ps1 $RekcodInstallationPath
+Copy-Item rekcod-switch.ps1 $RekcodInstallationPath
 
 wsl --import rekcod-wsl $RekcodInstallationPath ${RekcodInstallationPath}\tools\rekcod-wsl.tar
 wsl --set-version rekcod-wsl 2
