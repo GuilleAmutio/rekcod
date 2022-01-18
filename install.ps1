@@ -155,4 +155,8 @@ Set-Alias rekcod-compose docker-compose
 # Refresh environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
-## In order to use docker as normal user you must refresh session. Prompt user to do it now or later by himself
+# Create link to use Linux from Windows
+docker context create lin --docker host=tcp://127.0.0.1:2375
+
+## Create link to use Windows. Instead of using the default one
+docker context create win --docker host=npipe:////./pipe/docker_engine
