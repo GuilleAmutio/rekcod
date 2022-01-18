@@ -3,7 +3,7 @@
 Write-Output "Stopping all Docker containers"
 
 # Stop current containers for Windows and Linux
-docker ps -q | % { docker stop $_ }
+docker ps -q | ForEach-Object { docker stop $_ }
 docker -c lin stop $(docker ps -aq)
 
 # Shutdown WSL distro
