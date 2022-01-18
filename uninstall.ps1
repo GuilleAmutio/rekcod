@@ -25,7 +25,7 @@ Get-Content "${RekcodProfile}\old-profile.ps1" >> $PROFILE
 
 # Remove normal users access to docker
 $Info = New-Object "System.IO.DirectoryInfo" -ArgumentList "\\.\pipe\docker_engine"
-$AccessControl = $Info.GetAccesControl()
+$AccessControl = $Info.GetAccessControl()
 $Rule = New-Object "System.Security.AccessControl.FileSystemAccessRule" -ArgumentList $Account,$FullControll,$Allow
 $AccessControl.RemoveAccessRule($Rule) > $null
 $Info.SetAccessControl($AccessControl)
