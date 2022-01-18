@@ -1,5 +1,9 @@
 #!Requires -RunAsAdministrator
 
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
+
 $RekcodInstallationPath = [System.Environment]::GetEnvironmentVariable('REKCOD')
 $RekcodProfile = "${RekcodInstallationPath}\profile"
 $FullControll = [System.Security.AccessControl.FileSystemRights]::FullControll

@@ -1,5 +1,9 @@
 #Requires -RunAsAdministrator
 
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
+
 # Start dockerd service on Windows
 Write-Host "Starting Docker for Windows..." -ForegroundColor Yellow
 Start-Service docker

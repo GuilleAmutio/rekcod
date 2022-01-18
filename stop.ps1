@@ -1,5 +1,9 @@
 #Requires -RunAsAdministrator
 
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
+
 Write-Host "Stopping Docker..."
 
 # Shutdown WSL distro

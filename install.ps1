@@ -3,6 +3,10 @@
 # All TODOs
 ## TODO Clear console for each action. Keep it clean!
 
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
+
 # Variables
 $RekcodInstallationPath = "C:\rekcod"
 $Answer = "N"

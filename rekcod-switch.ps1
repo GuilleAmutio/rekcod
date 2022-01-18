@@ -1,3 +1,6 @@
+# Supress warnings
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param()
 
 # Switch context
 
