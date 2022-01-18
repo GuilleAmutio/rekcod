@@ -173,6 +173,7 @@ docker context create lin --docker host=tcp://127.0.0.1:2375
 
 ## Create link to use Windows. Instead of using the default one
 docker context create win --docker host=npipe:////./pipe/docker_engine
+docker context use win
 
 #endregion
 
