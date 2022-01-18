@@ -10,7 +10,7 @@ if ( $currentContextObject.Name -eq "lin" ){
 }
 
 if ( $currentContextObject.Name -eq "win" ){
-    Write-Host 'Switching to Linux containers...' -ForegroundColor - Yellow
+    Write-Host 'Switching to Linux containers...' -ForegroundColor Yellow
     docker context use lin
     Write-Host 'Docker is set to use Linux containers by default!' -ForegroundColor Green
 }
