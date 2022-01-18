@@ -174,3 +174,5 @@ docker context create lin --docker host=tcp://127.0.0.1:2375
 docker context create win --docker host=npipe:////./pipe/docker_engine
 
 #endregion
+
+Write-Host 'Rekcod installation has finished.' -ForegroundColor Green
