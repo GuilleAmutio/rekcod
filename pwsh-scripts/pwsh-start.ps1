@@ -13,9 +13,6 @@ $Account = "$env:UserDomain\$env:Username"
 # Start dockerd service on Windows
 Start-Service docker
 
-# Start WSL distro
-Start-Job -Name rekcod-wsl -ScriptBlock{ wsl -d rekcod-wsl }
-
 # Allow non-admin users to use Docker
 $Info = New-Object "System.IO.DirectoryInfo" -ArgumentList "\\.\pipe\docker_engine"
 $AccessControl = $Info.GetAccessControl()
