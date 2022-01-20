@@ -9,6 +9,9 @@ $RekcodProfile = "${RekcodInstallationPath}\profile"
 
 Write-Host 'We are sorry to see you go but allow us to leave your machine as clean as before rekcod.' -ForegroundColor Yellow
 
+# Remove powershell module for docker
+Uninstall-Module -Name dockeraccesshelper -Force
+
 # Remove docker contexts
 docker context rm win -f
 docker context rm lin -f
