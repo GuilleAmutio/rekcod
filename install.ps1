@@ -4,10 +4,15 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
 param()
 
-# Variables
+##############################
+#            MENU            #
+##############################
+
+# region variables
 $RekcodInstallationPath = "C:\rekcod"
 $Answer = "N"
 $TmpPath
+#endregion
 
 ##############################
 #            MENU            #
@@ -68,7 +73,7 @@ $RekcodProfile = "${RekcodInstallationPath}\profile"
 #           WINDOWS          #
 ##############################
 
-#region Windows
+#region windows
 
 ## Docker CLI
 Write-Host 'Installing Docker for Windows...' -ForegroundColor Blue
@@ -91,7 +96,7 @@ Write-Host 'Docker for Windows was installed successfully.' -ForegroundColor Gre
 #             WSL            #
 ##############################
 
-#region WSL
+#region wsl
 
 ## Create WSL distro
 Write-Host 'Installing WSL distro for Linux containers...' -ForegroundColor Blue
@@ -144,7 +149,7 @@ wsl -t rekcod-wsl
 #        Configuration       #
 ##############################
 
-#region Configuration
+#region configuration
 
 ## Check if a Microsoft profile exist
 if (!(Test-Path -Path $PROFILE))
