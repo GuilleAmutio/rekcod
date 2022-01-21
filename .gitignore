@@ -5,3 +5,9 @@
 
 # Ignore wsl distribution for dev
 *.vhdx
+
+# Ignore dev scripts
+*.dev.*
+
+# Ignore diagrams
+diagrams/
