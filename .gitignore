@@ -8,3 +8,6 @@
 
 # Ignore dev scripts
 *.dev.*
+
+# Ignore diagrams
+diagrams/
