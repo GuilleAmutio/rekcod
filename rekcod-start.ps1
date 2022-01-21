@@ -15,6 +15,6 @@ Write-Host "Starting Docker for Linux..." -ForegroundColor Yellow
 powershell -File ${RekcodInstallationPath}\pwsh-scripts\pwsh-start.ps1
 
 # Init WSL distro
-Start-Job -Name rekcod-wsl -ScriptBlock{ wsl -d rekcod-wsl htop; Start-Sleep 50 }
+Start-Job -Name rekcod-wsl -ScriptBlock{ wsl -d rekcod-wsl }
 
 Write-Host "Docker is up and ready! Happy coding!" -ForegroundColor Green

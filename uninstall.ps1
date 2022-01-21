@@ -31,10 +31,6 @@ Write-Host "Removing rekcod from your profile..." -ForegroundColor Yellow
 New-Item -Type File -Path $PROFILE -Force
 Get-Content "${RekcodProfile}\old-profile.ps1" >> $PROFILE
 
-# Remove installation folder
-Write-Host 'Removing rekcod folder...' -ForegroundColor Yellow
-Remove-Item $RekcodInstallationPath -Recurse
-
 # Get PATH variable
 Write-Host 'Cleaning environment variables...' -ForegroundColor Yellow
 $path = [System.Environment]::GetEnvironmentVariable(
@@ -54,5 +50,9 @@ $path = ($path.Split(';') | Where-Object { $_ -ne "${RekcodInstallationPath}\doc
 
 # Remove REKCOD env variable
 [Environment]::SetEnvironmentVariable("REKCOD", $null ,"Machine")
+
+# Remove installation folder
+Write-Host 'Removing rekcod folder...' -ForegroundColor Yellow
+Start-Job -Name uninstalling-rekcod -ScriptBlock{Start-Sleep 5; Remove-Item (Get-Item $RekcodInstallationPath) -Recurse -Force}
 
 Write-Host 'Rekcod has been uninstalled. See you soon :)' -ForegroundColor Yellow
