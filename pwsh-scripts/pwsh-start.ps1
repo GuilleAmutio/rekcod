@@ -7,8 +7,5 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 Start-Service docker
 
-# Start WSL distro
-Start-Job -Name rekcod-wsl -ScriptBlock{ wsl -d rekcod-wsl }
-
 # Allow non-admin users to use Docker
 Add-AccountToDockerAccess "$env:UserDomain\$env:Username"
