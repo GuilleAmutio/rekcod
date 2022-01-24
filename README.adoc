@@ -34,3 +34,5 @@ Along with docker, three new commands are also declared in the Powershell Profil
 When developing rekcod, it was taken into account that when the user no longer wanted to use rekcod or docker, uninstallation should be simple and leave the computer as it was before rekcod.
 
 Therefore, to uninstall rekcod, it is as easy as running, as administrator, the file `uninstall.ps1`.
+
+The uninstall script will cleanup the environment variables, folders and tools, but it will keep the folder where rekcod was installed with the uninstall script. This is tracked and under development
