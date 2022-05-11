@@ -1,5 +1,11 @@
 = rekcod
 
+:rakoondesktop: https://github.com/GuilleAmutio/rakoon-desktop
+
+== ⚠️ **Deprecation warning** ⚠️ 
+
+An application is being developed that will incorporate part of this repository for installation and add a visual interface, you can find it {rakoondesktop}[here]. This repository will not be updated, however, the scripts used may be useful.
+
 == Motivation
 rekcod (Docker in reverse) is an alternative to Docker-Desktop that was born after the changes in the terms and conditions of Docker-Desktop, which establishes that companies with more than 250 employees and an annual turnover of more than 10 million euros must use the Pro, Team or Business subscription.
 
